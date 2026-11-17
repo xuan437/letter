@@ -37,6 +37,9 @@ export interface LanguageUiStrings {
   replySentTitle: string;
   replySentMessage: string;
   replySentClose: string;
+  prankTitle: string;
+  prankMessage: string;
+  prankRestoreButton: string;
 }
 
 export const LANGUAGE_OPTIONS: { code: LanguageCode; label: string }[] = [
@@ -53,7 +56,7 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     hint: 'Click the wax seal to open your letter',
     foldButton: 'Fold & Seal',
     confirmTitle: 'Open This Letter?',
-    confirmMessage: 'Are you sure you want to break the wax seal and open this letter from Emj?',
+    confirmMessage: 'Are you sure you want to break the wax seal and open this letter from Emjay?',
     confirmCancel: 'Not yet',
     confirmAccept: 'Yes, open it',
     replyButton: 'Send a Letter Back',
@@ -64,8 +67,11 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     replyCancel: 'Cancel',
     replySend: 'Seal & Send Back',
     replySentTitle: 'Your Letter Was Sent ♥',
-    replySentMessage: 'Your reply has been sealed with love and sent back to Emj.',
+    replySentMessage: 'Your reply has been sealed with love and sent back to Emjay.',
     replySentClose: 'Back to Letter',
+    prankTitle: 'Just Kidding! It’s a Prank! 😄',
+    prankMessage: 'Gotcha! I wouldn’t really burn Emjay’s letter—he poured his whole heart into it. Go ahead and read it!',
+    prankRestoreButton: 'Restore the Letter ♥',
   },
   tl: {
     label: 'Tagalog',
@@ -73,7 +79,7 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     hint: 'Pindutin ang wax seal upang buksan ang sulat',
     foldButton: 'Tiklupin at Isara',
     confirmTitle: 'Buksan ang Sulat?',
-    confirmMessage: 'Sigurado ka bang gusto mong buksan ang selyadong sulat na ito mula kay Emj?',
+    confirmMessage: 'Sigurado ka bang gusto mong buksan ang selyadong sulat na ito mula kay Emjay?',
     confirmCancel: 'Huwag muna',
     confirmAccept: 'Oo, buksan',
     replyButton: 'Magpadala ng Sagot',
@@ -84,8 +90,11 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     replyCancel: 'Kanselahin',
     replySend: 'Isara at Ipadala',
     replySentTitle: 'Naipadala na ang Sulat ♥',
-    replySentMessage: 'Ang iyong sagot ay maingat na naisara at naipadala pabalik kay Emj.',
+    replySentMessage: 'Ang iyong sagot ay maingat na naisara at naipadala pabalik kay Emjay.',
     replySentClose: 'Bumalik sa Sulat',
+    prankTitle: 'Joke lang! Prank lang iyon! 😄',
+    prankMessage: 'Huli ka! Hindi ko talaga susunugin ang sulat ni Emjay—buong puso niya itong isinulat para sa iyo. Basahin mo na!',
+    prankRestoreButton: 'Ibalik ang Sulat ♥',
   },
   ceb: {
     label: 'Bisaya',
@@ -93,7 +102,7 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     hint: 'Pindota ang wax seal aron ablihan ang sulat',
     foldButton: 'Pil-a ug Isira',
     confirmTitle: 'Ablihan Kini nga Sulat?',
-    confirmMessage: 'Sigurado ka ba nga gusto nimong ablihan kining sinelyohan nga sulat gikan kang Emj?',
+    confirmMessage: 'Sigurado ka ba nga gusto nimong ablihan kining sinelyohan nga sulat gikan kang Emjay?',
     confirmCancel: 'Dili pa',
     confirmAccept: 'Oo, ablihi',
     replyButton: 'Padala og Balos nga Sulat',
@@ -104,8 +113,11 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     replyCancel: 'Kanselahon',
     replySend: 'Selyohi ug Ipadala',
     replySentTitle: 'Napadala na ang Imong Sulat ♥',
-    replySentMessage: 'Ang imong balos nga sulat gisilyohan uban sa gugma ug gipadala balik kang Emj.',
+    replySentMessage: 'Ang imong balos nga sulat gisilyohan uban sa gugma ug gipadala balik kang Emjay.',
     replySentClose: 'Balik sa Sulat',
+    prankTitle: 'Joke lang! Prank ra to! 😄',
+    prankMessage: 'Nadakpan ka! Dili gyud nako sunugon ang sulat ni Emjay—gikan gyud na sa iyang kasingkasing. Basaha na!',
+    prankRestoreButton: 'Ibalik ang Sulat ♥',
   },
   war: {
     label: 'Waray',
@@ -113,7 +125,7 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     hint: 'Pinduta an wax seal para abrihan an surat',
     foldButton: 'Pil-a ngan Isara',
     confirmTitle: 'Abrihan Ini nga Surat?',
-    confirmMessage: 'Sigurado ka ba nga karuyag mo abrihan ini nga sinelyohan nga surat tikang kan Emj?',
+    confirmMessage: 'Sigurado ka ba nga karuyag mo abrihan ini nga sinelyohan nga surat tikang kan Emjay?',
     confirmCancel: 'Diri anay',
     confirmAccept: 'Oo, abriha',
     replyButton: 'Pagpadara hin Balos nga Surat',
@@ -124,15 +136,18 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     replyCancel: 'Kanselahon',
     replySend: 'Selyohi ngan Ipadara',
     replySentTitle: 'Napadara na an Imo Surat ♥',
-    replySentMessage: 'An imo balos nga surat ginselyohan hin gugma ngan iginpadara pabalik kan Emj.',
+    replySentMessage: 'An imo balos nga surat ginselyohan hin gugma ngan iginpadara pabalik kan Emjay.',
     replySentClose: 'Balik ha Surat',
+    prankTitle: 'Joke la! Prank la ito! 😄',
+    prankMessage: 'Nadakpan ka! Diri ko gud susunugon an surat ni Emjay—tikang gud ito ha iya kasingkasing. Basaha na!',
+    prankRestoreButton: 'Ibalik an Surat ♥',
   },
 };
 
 export const LETTER_TRANSLATIONS: Record<LanguageCode, LetterData> = {
   en: {
     recipient: 'Cherry',
-    sender: 'Emj',
+    sender: 'Emjay',
     date: 'November 18, 2026',
     salutation: 'Dear Cherry,',
     body: `I’m not great with words, especially when it comes to saying what’s really in my heart. I’ve tried a few times to say this to your face and it never comes out right, so I’m writing it down instead. Please bear with me if it sounds clumsy.
@@ -149,13 +164,13 @@ I hope that someday I can give you everything you want, not just the things mone
 
 I hope to experience more adventures with you, just like the world sets us free to enjoy its view.`,
     closing: 'Always yours,',
-    signature: 'Emj',
+    signature: 'Emjay',
     sealColor: 'crimson',
     paperTheme: 'blush',
   },
   tl: {
     recipient: 'Cherry',
-    sender: 'Emj',
+    sender: 'Emjay',
     date: 'Nobyembre 18, 2026',
     salutation: 'Mahal kong Cherry,',
     body: `Hindi ako magaling sa mga salita, lalo na pagdating sa pagsasabi ng tunay na nilalaman ng puso ko. Ilang beses ko nang sinubukang sabihin ito sa harap mo pero hindi lumalabas nang maayos, kaya isinulat ko na lang. Pagpasensyahan mo sana kung medyo magulo pakinggan.
@@ -172,13 +187,13 @@ Sana balang araw ay maibigay ko sa iyo ang lahat ng gusto mo—hindi lang ang mg
 
 Umaasa akong makaranas pa ng mas maraming paglalakbay kasama ka, gaya ng mundong nagpapalaya sa atin upang masilayan ang ganda nito.`,
     closing: 'Habambuhay na sa iyo,',
-    signature: 'Emj',
+    signature: 'Emjay',
     sealColor: 'crimson',
     paperTheme: 'blush',
   },
   ceb: {
     recipient: 'Cherry',
-    sender: 'Emj',
+    sender: 'Emjay',
     date: 'Nobyembre 18, 2026',
     salutation: 'Pinangga kong Cherry,',
     body: `Dili ko maayo sa mga pulong, labi na kon bahin sa pagsulti sa tinuod nga naa sa akong kasingkasing. Pipila na ka higayon nga gisulayan nako kini isulti sa imong atubangan pero dili gyud mogawas og tarong, mao nga gisulat na lang nako. Pasayloa ko kon medyo bakikaw kini paminawon.
@@ -195,13 +210,13 @@ Naglaom ko nga moabot ang adlaw nga mahatag nako nimo ang tanan nimong gipangand
 
 Naglaom ko nga makaagi pa og daghang panimpalad uban nimo, sama sa kalibotan nga naghatag kanato og kagawasan aron matagamtam ang kanindot niini.`,
     closing: 'Kanimo hangtod sa hangtod,',
-    signature: 'Emj',
+    signature: 'Emjay',
     sealColor: 'crimson',
     paperTheme: 'blush',
   },
   war: {
     recipient: 'Cherry',
-    sender: 'Emj',
+    sender: 'Emjay',
     date: 'Nobyembre 18, 2026',
     salutation: 'Hinigugma ko nga Cherry,',
     body: `Diri ako maupay ha mga pulong, labi na kon mahitungod ha pagsumat han tinuod nga aada ha akon kasingkasing. Pira na ka beses ko ginsari pagyakan ini ha imo atubangan pero diri gud nagawas hin maupay, sanglit ginsurat ko na la. Pasayloa ako kon baga hin diri maupay pamatian.
@@ -218,7 +233,7 @@ Naglalaom ako nga ha usa ka adlaw maihatag ko ha imo an ngatanan nga imo karuyag
 
 Naglalaom ako nga makaagi pa hin mas damo nga pagbiyahe kaupod ka, sugad han kalibotan nga naghahatag ha aton hin kagawasan basi matagamtaman an iya kahusay.`,
     closing: 'Ha imo ha kadayunan,',
-    signature: 'Emj',
+    signature: 'Emjay',
     sealColor: 'crimson',
     paperTheme: 'blush',
   },

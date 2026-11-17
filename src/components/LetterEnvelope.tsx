@@ -8,6 +8,7 @@ interface LetterEnvelopeProps {
   onOpen: () => void;
   forLabel?: string;
   hintText?: string;
+  isBurning?: boolean;
 }
 
 export const LetterEnvelope: React.FC<LetterEnvelopeProps> = ({
@@ -16,6 +17,7 @@ export const LetterEnvelope: React.FC<LetterEnvelopeProps> = ({
   onOpen,
   forLabel = 'For',
   hintText = 'Click the wax seal to open your letter',
+  isBurning = false,
 }) => {
   const isClosed = stage === 'closed';
   const isUnsealing = stage === 'unsealing';
@@ -30,8 +32,10 @@ export const LetterEnvelope: React.FC<LetterEnvelopeProps> = ({
   return (
     <div className={`envelope-stage envelope-stage--${stage}`}>
       <div
-        className={`envelope ${isClosed ? 'envelope--interactive' : ''}`}
-        onClick={isClosed ? onOpen : undefined}
+        className={`envelope ${isClosed && !isBurning ? 'envelope--interactive' : ''} ${
+          isBurning ? 'envelope--burning' : ''
+        }`}
+        onClick={isClosed && !isBurning ? onOpen : undefined}
         role={isClosed ? 'button' : undefined}
         tabIndex={isClosed ? 0 : undefined}
         onKeyDown={
@@ -123,19 +127,50 @@ export const LetterEnvelope: React.FC<LetterEnvelopeProps> = ({
           className="envelope__seal-anchor"
           onClick={(e) => {
             e.stopPropagation();
-            if (isClosed) onOpen();
+            if (isClosed && !isBurning) onOpen();
           }}
         >
           <WaxSeal
             color={letter.sealColor}
             isBroken={!isClosed}
             onClick={onOpen}
-            disabled={!isClosed}
+            disabled={!isClosed || isBurning}
           />
         </div>
+
+        {isBurning && (
+          <div className="burn-overlay" aria-hidden="true">
+            <div className="burn-overlay__char-edge" />
+            <div className="burn-overlay__flames" />
+            <div className="burn-overlay__flame-tongues">
+              <span className="flame-tongue flame-tongue--1" />
+              <span className="flame-tongue flame-tongue--2" />
+              <span className="flame-tongue flame-tongue--3" />
+              <span className="flame-tongue flame-tongue--4" />
+              <span className="flame-tongue flame-tongue--5" />
+            </div>
+            <div className="burn-overlay__smoke">
+              <span className="smoke-wisp smoke-wisp--1" />
+              <span className="smoke-wisp smoke-wisp--2" />
+              <span className="smoke-wisp smoke-wisp--3" />
+            </div>
+            <span className="ember ember--1" />
+            <span className="ember ember--2" />
+            <span className="ember ember--3" />
+            <span className="ember ember--4" />
+            <span className="ember ember--5" />
+            <span className="ember ember--6" />
+            <span className="ember ember--7" />
+            <span className="ember ember--8" />
+            <span className="ash-flake ash-flake--1" />
+            <span className="ash-flake ash-flake--2" />
+            <span className="ash-flake ash-flake--3" />
+            <span className="ash-flake ash-flake--4" />
+          </div>
+        )}
       </div>
 
-      {isClosed && (
+      {isClosed && !isBurning && (
         <p className="envelope-hint">{hintText}</p>
       )}
     </div>

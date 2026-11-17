@@ -4,6 +4,7 @@ import { LanguageCode } from '../types/letter';
 interface LittleBuddyProps {
   language: LanguageCode;
   onCompleteQuestions?: () => void;
+  onAnswerNo?: () => void;
   nudgeSignal?: number;
 }
 
@@ -165,6 +166,7 @@ const BUDDY_COPY: Record<LanguageCode, BuddyCopy> = {
 export const LittleBuddy: React.FC<LittleBuddyProps> = ({
   language,
   onCompleteQuestions,
+  onAnswerNo,
   nudgeSignal = 0,
 }) => {
   const [step, setStep] = useState(0);
@@ -403,8 +405,9 @@ export const LittleBuddy: React.FC<LittleBuddyProps> = ({
                     type="button"
                     className="btn-modal-secondary"
                     onClick={() => {
-                      setChanceAnswer('no');
+                      setIsChanceModalOpen(false);
                       onCompleteQuestions?.();
+                      onAnswerNo?.();
                     }}
                   >
                     {copy.noLabel}

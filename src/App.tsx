@@ -18,6 +18,8 @@ export const App: React.FC = () => {
   const [isReplyOpen, setIsReplyOpen] = useState(false);
   const [hasCompletedQuestions, setHasCompletedQuestions] = useState(false);
   const [buddyNudge, setBuddyNudge] = useState(0);
+  const [isBurning, setIsBurning] = useState(false);
+  const [isPrankModalOpen, setIsPrankModalOpen] = useState(false);
   const timersRef = useRef<number[]>([]);
 
   const clearTimers = useCallback(() => {
@@ -54,6 +56,23 @@ export const App: React.FC = () => {
 
     timersRef.current.push(t1, t2);
   }, [stage, clearTimers]);
+
+  const handleBurnPrank = useCallback(() => {
+    clearTimers();
+    setStage('closed');
+    setIsBurning(true);
+
+    const t = window.setTimeout(() => {
+      setIsPrankModalOpen(true);
+    }, 2650);
+
+    timersRef.current.push(t);
+  }, [clearTimers]);
+
+  const handleRestoreFromPrank = useCallback(() => {
+    setIsPrankModalOpen(false);
+    setIsBurning(false);
+  }, []);
 
   const handleClose = useCallback(() => {
     clearTimers();
@@ -112,6 +131,7 @@ export const App: React.FC = () => {
           onOpen={handleRequestOpen}
           forLabel={currentUi.forLabel}
           hintText={currentUi.hint}
+          isBurning={isBurning}
         />
 
         {stage === 'open' && (
@@ -183,8 +203,42 @@ export const App: React.FC = () => {
       <LittleBuddy
         language={language}
         onCompleteQuestions={() => setHasCompletedQuestions(true)}
+        onAnswerNo={handleBurnPrank}
         nudgeSignal={buddyNudge}
       />
+
+      {isPrankModalOpen && (
+        <div
+          className="modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="prank-modal-title"
+          onClick={handleRestoreFromPrank}
+        >
+          <div
+            className="romantic-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="romantic-modal__crest" aria-hidden="true">
+              😄
+            </div>
+            <h2 id="prank-modal-title" className="romantic-modal__title">
+              {currentUi.prankTitle}
+            </h2>
+            <p className="romantic-modal__text">{currentUi.prankMessage}</p>
+            <div className="romantic-modal__actions">
+              <button
+                type="button"
+                className="btn-modal-primary"
+                onClick={handleRestoreFromPrank}
+                autoFocus
+              >
+                {currentUi.prankRestoreButton}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
