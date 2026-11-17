@@ -3,6 +3,8 @@ import { LanguageCode } from '../types/letter';
 
 interface LittleBuddyProps {
   language: LanguageCode;
+  onCompleteQuestions?: () => void;
+  nudgeSignal?: number;
 }
 
 interface BuddyCopy {
@@ -13,6 +15,12 @@ interface BuddyCopy {
   noReaction: string;
   finalMessage: string;
   askAgainLabel: string;
+  chanceTitle: string;
+  chanceQuestion: string;
+  chanceYesResponse: string;
+  chanceNoResponse: string;
+  chanceCloseLabel: string;
+  answerFirstNudge: string;
 }
 
 interface BuddySpot {
@@ -59,6 +67,14 @@ const BUDDY_COPY: Record<LanguageCode, BuddyCopy> = {
     noReaction: 'Hmm... are you sure? Try reading his letter again!',
     finalMessage: 'Yay! Go send him a little letter back ♥',
     askAgainLabel: 'Ask again',
+    chanceTitle: 'One Honest Question',
+    chanceQuestion: 'If given a chance, will you start again with him?',
+    chanceYesResponse:
+      'Thank you for giving love another chance ♥ He promises to treasure your heart and do things right.',
+    chanceNoResponse:
+      'That’s completely okay. Thank you for taking the time to read his heart—he’ll always wish you peace and happiness.',
+    chanceCloseLabel: 'Close',
+    answerFirstNudge: 'Hehe, answer my mini questions first before opening the letter! ♥',
   },
   tl: {
     questions: [
@@ -78,6 +94,15 @@ const BUDDY_COPY: Record<LanguageCode, BuddyCopy> = {
     noReaction: 'Hmm... sigurado ka ba? Basahin mo ulit ang sulat niya!',
     finalMessage: 'Yehey! Padalhan mo na siya ng sagot ♥',
     askAgainLabel: 'Magtanong ulit',
+    chanceTitle: 'Isang Totoong Tanong',
+    chanceQuestion:
+      'Kung bibigyan ng pagkakataon, handa ka bang magsimula muli kasama siya?',
+    chanceYesResponse:
+      'Salamat sa pagbibigay ng isa pang pagkakataon ♥ Pangako niyang iingatan ang puso mo at itatama ang lahat.',
+    chanceNoResponse:
+      'Ayos lang iyon. Salamat sa pagbabasa ng nilalaman ng puso niya—palagi niyang hinihiling ang iyong kapayapaan at saya.',
+    chanceCloseLabel: 'Isara',
+    answerFirstNudge: 'Hehe, sagutin mo muna ang mga tanong ko bago buksan ang sulat! ♥',
   },
   ceb: {
     questions: [
@@ -97,6 +122,15 @@ const BUDDY_COPY: Record<LanguageCode, BuddyCopy> = {
     noReaction: 'Hmm... sigurado ka? Basaha pag-usab ang iyang sulat!',
     finalMessage: 'Yehey! Padalhi na siya og balos nga sulat ♥',
     askAgainLabel: 'Pangutana pag-usab',
+    chanceTitle: 'Usa ka Tinud-anay nga Pangutana',
+    chanceQuestion:
+      'Kon hatagan og higayon, mosugot ba ka nga magsugod pag-usab uban niya?',
+    chanceYesResponse:
+      'Salamat sa paghatag og lain nga higayon ♥ Nagsaad siya nga ampingan ang imong kasingkasing ug tarungon ang tanan.',
+    chanceNoResponse:
+      'Okay ra gyud na. Salamat sa paggahin og oras sa pagbasa sa iyang gibati—kanunay siyang nanghinaut sa imong kalinaw ug kalipay.',
+    chanceCloseLabel: 'Isira',
+    answerFirstNudge: 'Hehe, tubaga sa ang akong mga pangutana una nimo ablihan ang sulat! ♥',
   },
   war: {
     questions: [
@@ -116,10 +150,23 @@ const BUDDY_COPY: Record<LanguageCode, BuddyCopy> = {
     noReaction: 'Hmm... sigurado ka? Basaha utro an iya surat!',
     finalMessage: 'Yehey! Padad-i na hiya hin balos nga surat ♥',
     askAgainLabel: 'Pakiana utro',
+    chanceTitle: 'Usa nga Tinuod nga Pakiana',
+    chanceQuestion:
+      'Kon tagan hin higayon, maruruyag ka ba nga magtikang utro kaupod hiya?',
+    chanceYesResponse:
+      'Salamat ha paghatag hin usa pa nga higayon ♥ Nagsasaad hiya nga aampingan an imo kasingkasing ngan aayuson an ngatanan.',
+    chanceNoResponse:
+      'Maupay la ito. Salamat ha pagbasa han aada ha iya kasingkasing—pirme hiya naghihingyap han imo kamurayawan ngan kalipay.',
+    chanceCloseLabel: 'Isara',
+    answerFirstNudge: 'Hehe, batona anay an akon mga pakiana san-o abrihan an surat! ♥',
   },
 };
 
-export const LittleBuddy: React.FC<LittleBuddyProps> = ({ language }) => {
+export const LittleBuddy: React.FC<LittleBuddyProps> = ({
+  language,
+  onCompleteQuestions,
+  nudgeSignal = 0,
+}) => {
   const [step, setStep] = useState(0);
   const [reaction, setReaction] = useState<string | null>(null);
   const [mood, setMood] = useState<'idle' | 'happy' | 'shy'>('idle');
@@ -127,9 +174,8 @@ export const LittleBuddy: React.FC<LittleBuddyProps> = ({ language }) => {
   const [spotIndex, setSpotIndex] = useState(() => pickRandomSpot());
   const [popKey, setPopKey] = useState(0);
   const [noOffset, setNoOffset] = useState({ x: 0, y: 0 });
-  const [spotIndex, setSpotIndex] = useState(() => pickRandomSpot());
-  const [popKey, setPopKey] = useState(0);
-  const [noOffset, setNoOffset] = useState({ x: 0, y: 0 });
+  const [isChanceModalOpen, setIsChanceModalOpen] = useState(false);
+  const [chanceAnswer, setChanceAnswer] = useState<'yes' | 'no' | null>(null);
 
   const copy = BUDDY_COPY[language];
   const isFinished = step >= copy.questions.length;
@@ -149,32 +195,18 @@ export const LittleBuddy: React.FC<LittleBuddyProps> = ({ language }) => {
     return () => window.clearInterval(interval);
   }, [isMinimized, reaction, hopToRandomSpot]);
 
-  const dodgeNoButton = useCallback(() => {
-    setNoOffset((prev) => {
-      let nextX = (Math.random() - 0.5) * 160;
-      let nextY = (Math.random() - 0.5) * 110;
-      // Ensure a noticeable jump away from the cursor
-      if (Math.hypot(nextX - prev.x, nextY - prev.y) < 55) {
-        nextX = prev.x >= 0 ? -75 : 75;
-        nextY = prev.y >= 0 ? -50 : 50;
-      }
-      return { x: Math.round(nextX), y: Math.round(nextY) };
-    });
-  }, []);
-
-  const hopToRandomSpot = useCallback(() => {
-    setSpotIndex((prev) => pickRandomSpot(prev));
-    setPopKey((prev) => prev + 1);
-  }, []);
-
   useEffect(() => {
-    const interval = window.setInterval(() => {
-      if (!isMinimized && !reaction) {
-        hopToRandomSpot();
-      }
-    }, 9500);
-    return () => window.clearInterval(interval);
-  }, [isMinimized, reaction, hopToRandomSpot]);
+    if (nudgeSignal > 0) {
+      setIsMinimized(false);
+      setMood('shy');
+      setReaction(copy.answerFirstNudge);
+      const t = window.setTimeout(() => {
+        setReaction(null);
+        setMood('idle');
+      }, 2400);
+      return () => window.clearTimeout(t);
+    }
+  }, [nudgeSignal, copy.answerFirstNudge]);
 
   const dodgeNoButton = useCallback(() => {
     setNoOffset((prev) => {
@@ -194,10 +226,15 @@ export const LittleBuddy: React.FC<LittleBuddyProps> = ({ language }) => {
     setNoOffset({ x: 0, y: 0 });
     setReaction(copy.yesReactions[step] ?? copy.yesReactions[0]);
     window.setTimeout(() => {
-      setStep((prev) => prev + 1);
+      const nextStep = step + 1;
+      setStep(nextStep);
       setReaction(null);
       setMood('idle');
-      hopToRandomSpot();
+      if (nextStep >= copy.questions.length) {
+        setIsChanceModalOpen(true);
+      } else {
+        hopToRandomSpot();
+      }
     }, 1050);
   };
 
@@ -215,6 +252,7 @@ export const LittleBuddy: React.FC<LittleBuddyProps> = ({ language }) => {
     setNoOffset({ x: 0, y: 0 });
     setReaction(null);
     setMood('idle');
+    setChanceAnswer(null);
     hopToRandomSpot();
   };
 
@@ -337,6 +375,73 @@ export const LittleBuddy: React.FC<LittleBuddyProps> = ({ language }) => {
           <path d="M31 59 L40 66 L49 59" fill="none" stroke="#fbe8e2" strokeWidth="1.4" />
         </svg>
       </button>
+
+      {isChanceModalOpen && (
+        <div
+          className="modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="chance-modal-title"
+          onClick={() => setIsChanceModalOpen(false)}
+        >
+          <div
+            className="romantic-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="romantic-modal__crest" aria-hidden="true">
+              ♥
+            </div>
+            <h2 id="chance-modal-title" className="romantic-modal__title">
+              {copy.chanceTitle}
+            </h2>
+
+            {chanceAnswer === null ? (
+              <>
+                <p className="romantic-modal__text">{copy.chanceQuestion}</p>
+                <div className="romantic-modal__actions">
+                  <button
+                    type="button"
+                    className="btn-modal-secondary"
+                    onClick={() => {
+                      setChanceAnswer('no');
+                      onCompleteQuestions?.();
+                    }}
+                  >
+                    {copy.noLabel}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-modal-primary"
+                    onClick={() => {
+                      setChanceAnswer('yes');
+                      onCompleteQuestions?.();
+                    }}
+                  >
+                    {copy.yesLabel}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="romantic-modal__text">
+                  {chanceAnswer === 'yes'
+                    ? copy.chanceYesResponse
+                    : copy.chanceNoResponse}
+                </p>
+                <div className="romantic-modal__actions">
+                  <button
+                    type="button"
+                    className="btn-modal-primary"
+                    onClick={() => setIsChanceModalOpen(false)}
+                  >
+                    {copy.chanceCloseLabel}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

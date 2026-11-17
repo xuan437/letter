@@ -16,6 +16,8 @@ export const App: React.FC = () => {
   const [language, setLanguage] = useState<LanguageCode>('en');
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isReplyOpen, setIsReplyOpen] = useState(false);
+  const [hasCompletedQuestions, setHasCompletedQuestions] = useState(false);
+  const [buddyNudge, setBuddyNudge] = useState(0);
   const timersRef = useRef<number[]>([]);
 
   const clearTimers = useCallback(() => {
@@ -29,8 +31,12 @@ export const App: React.FC = () => {
 
   const handleRequestOpen = useCallback(() => {
     if (stage !== 'closed') return;
+    if (!hasCompletedQuestions) {
+      setBuddyNudge((prev) => prev + 1);
+      return;
+    }
     setIsConfirmOpen(true);
-  }, [stage]);
+  }, [stage, hasCompletedQuestions]);
 
   const handleConfirmOpen = useCallback(() => {
     setIsConfirmOpen(false);
@@ -174,7 +180,11 @@ export const App: React.FC = () => {
         onClose={() => setIsReplyOpen(false)}
       />
 
-      <LittleBuddy language={language} />
+      <LittleBuddy
+        language={language}
+        onCompleteQuestions={() => setHasCompletedQuestions(true)}
+        nudgeSignal={buddyNudge}
+      />
     </div>
   );
 };
