@@ -22,6 +22,7 @@ export interface LanguageUiStrings {
   label: string;
   forLabel: string;
   hint: string;
+  lockedHint: string;
   foldButton: string;
   confirmTitle: string;
   confirmMessage: string;
@@ -54,6 +55,7 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     label: 'English',
     forLabel: 'For',
     hint: 'Click the wax seal to open your letter',
+    lockedHint: 'Name the little messenger & answer his questions first to unlock ♥',
     foldButton: 'Fold & Seal',
     confirmTitle: 'Open This Letter?',
     confirmMessage: 'Are you sure you want to break the wax seal and open this letter from Emjay?',
@@ -77,6 +79,7 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     label: 'Tagalog',
     forLabel: 'Para kay',
     hint: 'Pindutin ang wax seal upang buksan ang sulat',
+    lockedHint: 'Pangalanan muna ang mensahero at sagutin ang mga tanong niya ♥',
     foldButton: 'Tiklupin at Isara',
     confirmTitle: 'Buksan ang Sulat?',
     confirmMessage: 'Sigurado ka bang gusto mong buksan ang selyadong sulat na ito mula kay Emjay?',
@@ -100,6 +103,7 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     label: 'Bisaya',
     forLabel: 'Para kang',
     hint: 'Pindota ang wax seal aron ablihan ang sulat',
+    lockedHint: 'Ngalani una ang mensahero ug tubaga ang iyang mga pangutana ♥',
     foldButton: 'Pil-a ug Isira',
     confirmTitle: 'Ablihan Kini nga Sulat?',
     confirmMessage: 'Sigurado ka ba nga gusto nimong ablihan kining sinelyohan nga sulat gikan kang Emjay?',
@@ -123,6 +127,7 @@ export const UI_TRANSLATIONS: Record<LanguageCode, LanguageUiStrings> = {
     label: 'Waray',
     forLabel: 'Para kan',
     hint: 'Pinduta an wax seal para abrihan an surat',
+    lockedHint: 'Ngarani anay an mensahero ngan batona an iya mga pakiana ♥',
     foldButton: 'Pil-a ngan Isara',
     confirmTitle: 'Abrihan Ini nga Surat?',
     confirmMessage: 'Sigurado ka ba nga karuyag mo abrihan ini nga sinelyohan nga surat tikang kan Emjay?',

@@ -9,6 +9,7 @@ interface LetterEnvelopeProps {
   forLabel?: string;
   hintText?: string;
   isBurning?: boolean;
+  isRestoring?: boolean;
 }
 
 export const LetterEnvelope: React.FC<LetterEnvelopeProps> = ({
@@ -18,6 +19,7 @@ export const LetterEnvelope: React.FC<LetterEnvelopeProps> = ({
   forLabel = 'For',
   hintText = 'Click the wax seal to open your letter',
   isBurning = false,
+  isRestoring = false,
 }) => {
   const isClosed = stage === 'closed';
   const isUnsealing = stage === 'unsealing';
@@ -34,7 +36,7 @@ export const LetterEnvelope: React.FC<LetterEnvelopeProps> = ({
       <div
         className={`envelope ${isClosed && !isBurning ? 'envelope--interactive' : ''} ${
           isBurning ? 'envelope--burning' : ''
-        }`}
+        } ${isRestoring ? 'envelope--restoring' : ''}`}
         onClick={isClosed && !isBurning ? onOpen : undefined}
         role={isClosed ? 'button' : undefined}
         tabIndex={isClosed ? 0 : undefined}
@@ -166,6 +168,20 @@ export const LetterEnvelope: React.FC<LetterEnvelopeProps> = ({
             <span className="ash-flake ash-flake--2" />
             <span className="ash-flake ash-flake--3" />
             <span className="ash-flake ash-flake--4" />
+          </div>
+        )}
+
+        {isRestoring && (
+          <div className="restore-overlay" aria-hidden="true">
+            <div className="restore-overlay__glow" />
+            <span className="sparkle sparkle--1">✦</span>
+            <span className="sparkle sparkle--2">♥</span>
+            <span className="sparkle sparkle--3">✦</span>
+            <span className="sparkle sparkle--4">✧</span>
+            <span className="sparkle sparkle--5">✦</span>
+            <span className="sparkle sparkle--6">♥</span>
+            <span className="sparkle sparkle--7">✧</span>
+            <span className="sparkle sparkle--8">✦</span>
           </div>
         )}
       </div>

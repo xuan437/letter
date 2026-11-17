@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { LetterEnvelope } from './components/LetterEnvelope';
 import { LittleBuddy } from './components/LittleBuddy';
+import { LoveToastPopups } from './components/LoveToastPopups';
 import { ReplyLetterModal } from './components/ReplyLetterModal';
 import { WorldStampCards } from './components/WorldStampCards';
 import {
@@ -19,6 +20,7 @@ export const App: React.FC = () => {
   const [hasCompletedQuestions, setHasCompletedQuestions] = useState(false);
   const [buddyNudge, setBuddyNudge] = useState(0);
   const [isBurning, setIsBurning] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
   const [isPrankModalOpen, setIsPrankModalOpen] = useState(false);
   const timersRef = useRef<number[]>([]);
 
@@ -70,9 +72,17 @@ export const App: React.FC = () => {
   }, [clearTimers]);
 
   const handleRestoreFromPrank = useCallback(() => {
+    clearTimers();
     setIsPrankModalOpen(false);
     setIsBurning(false);
-  }, []);
+    setIsRestoring(true);
+
+    const t = window.setTimeout(() => {
+      setIsRestoring(false);
+    }, 1500);
+
+    timersRef.current.push(t);
+  }, [clearTimers]);
 
   const handleClose = useCallback(() => {
     clearTimers();
@@ -130,8 +140,9 @@ export const App: React.FC = () => {
           stage={stage}
           onOpen={handleRequestOpen}
           forLabel={currentUi.forLabel}
-          hintText={currentUi.hint}
+          hintText={hasCompletedQuestions ? currentUi.hint : currentUi.lockedHint}
           isBurning={isBurning}
+          isRestoring={isRestoring}
         />
 
         {stage === 'open' && (
@@ -206,6 +217,8 @@ export const App: React.FC = () => {
         onAnswerNo={handleBurnPrank}
         nudgeSignal={buddyNudge}
       />
+
+      <LoveToastPopups />
 
       {isPrankModalOpen && (
         <div
